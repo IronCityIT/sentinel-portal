@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="180" height="50" viewBox="0 0 180 50">
+  <defs>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#E5C88F;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#C9A961;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#B8944A;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Compact shield -->
+  <path d="M 8 5 L 20 2 L 32 5 L 32 28 Q 32 36 20 38 Q 8 36 8 28 Z" 
+        fill="#1a1a1a" 
+        stroke="url(#goldGrad)" 
+        stroke-width="1.5"/>
+  
+  <!-- Bridge icon -->
+  <g transform="translate(20, 23)">
+    <rect x="-6" y="-10" width="1.5" height="12" fill="#C9A961"/>
+    <rect x="4.5" y="-10" width="1.5" height="12" fill="#C9A961"/>
+    <path d="M -6 -10 Q 0 -5 6 -10" stroke="#C9A961" stroke-width="0.8" fill="none"/>
+    <path d="M -6 -6 Q 0 -2 6 -6" stroke="#C9A961" stroke-width="0.6" fill="none"/>
+    <rect x="-8" y="2" width="16" height="1" fill="#C9A961"/>
+    <rect x="-2" y="-2" width="4" height="4" rx="0.5" fill="#C9A961"/>
+    <circle cx="0" cy="-4" r="1.5" stroke="#C9A961" stroke-width="0.8" fill="none"/>
+  </g>
+  
+  <!-- Text -->
+  <text x="42" y="25" font-family="'Arial Black', sans-serif" font-size="18" font-weight="bold" fill="url(#goldGrad)">
+    ICIT SENTINEL
+  </text>
+  <text x="42" y="38" font-family="Arial, sans-serif" font-size="9" fill="#888888" letter-spacing="1">
+    SECURITY INTELLIGENCE
+  </text>
+</svg>

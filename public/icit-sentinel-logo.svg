@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="120" viewBox="0 0 400 120">
+  <!-- Background shield -->
+  <defs>
+    <linearGradient id="goldGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#E5C88F;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#C9A961;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#B8944A;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="darkGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#2a2a2a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1a1a1a;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Main shield shape -->
+  <path d="M 30 20 L 50 15 L 70 20 L 70 55 Q 70 70 50 75 Q 30 70 30 55 Z" 
+        fill="url(#darkGradient)" 
+        stroke="url(#goldGradient)" 
+        stroke-width="2"/>
+  
+  <!-- Pittsburgh bridge icon inside shield -->
+  <g transform="translate(50, 45)">
+    <!-- Bridge towers -->
+    <rect x="-12" y="-15" width="2" height="20" fill="#C9A961"/>
+    <rect x="10" y="-15" width="2" height="20" fill="#C9A961"/>
+    
+    <!-- Bridge cables -->
+    <path d="M -12 -15 Q 0 -5 12 -15" stroke="#C9A961" stroke-width="1" fill="none"/>
+    <path d="M -12 -10 Q 0 -2 12 -10" stroke="#C9A961" stroke-width="0.8" fill="none"/>
+    <path d="M -12 -5 Q 0 1 12 -5" stroke="#C9A961" stroke-width="0.6" fill="none"/>
+    
+    <!-- Bridge deck -->
+    <rect x="-15" y="5" width="30" height="1.5" fill="#C9A961"/>
+    
+    <!-- Lock/security icon -->
+    <rect x="-3" y="-2" width="6" height="6" rx="1" fill="#C9A961"/>
+    <circle cx="0" cy="-5" r="2.5" stroke="#C9A961" stroke-width="1.2" fill="none"/>
+  </g>
+  
+  <!-- ICIT text -->
+  <text x="85" y="45" font-family="'Arial Black', 'Arial Bold', sans-serif" font-size="32" font-weight="bold" fill="url(#goldGradient)">
+    ICIT
+  </text>
+  
+  <!-- Sentinel text -->
+  <text x="85" y="70" font-family="Arial, sans-serif" font-size="24" font-weight="600" fill="#C9A961" letter-spacing="1">
+    SENTINEL
+  </text>
+  
+  <!-- SIEM subtitle -->
+  <text x="85" y="88" font-family="Arial, sans-serif" font-size="14" fill="#888888" letter-spacing="2">
+    SECURITY INTELLIGENCE
+  </text>
+  
+  <!-- Tagline -->
+  <text x="85" y="105" font-family="Arial, sans-serif" font-size="11" fill="#666666" font-style="italic">
+    Pittsburgh-Based Cybersecurity
+  </text>
+  
+  <!-- Decorative steel beam lines -->
+  <line x1="85" y1="75" x2="280" y2="75" stroke="#C9A961" stroke-width="0.5" opacity="0.5"/>
+  <line x1="85" y1="92" x2="250" y2="92" stroke="#666666" stroke-width="0.5" opacity="0.3"/>
+</svg>
