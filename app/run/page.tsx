@@ -37,27 +37,32 @@ export default function RunPage() {
     'attacksim': {
       name: 'AttackSim Pro',
       icon: '⚔️',
-      repo: 'IronCityIT/attacksim-pro',
+      repo: 'IronCityIT/ICIT-AttackSimPro',
       workflows: [
         { id: 'zap-baseline.yml', name: 'ZAP Baseline (Passive)', desc: 'Non-intrusive passive scan' },
-        { id: 'zap-full.yml', name: 'ZAP Full Scan (Active)', desc: 'Comprehensive active scanning' },
-        { id: 'nuclei-scan.yml', name: 'Nuclei CVE Scanner', desc: 'Known vulnerability detection' }
+        { id: 'zap-fullscan.yml', name: 'ZAP Full Scan (Active)', desc: 'Comprehensive active scanning' },
+        { id: 'zap-api-scan.yml', name: 'ZAP API Scan', desc: 'REST/GraphQL API scanning' },
+        { id: 'zap-auth-scan.yml', name: 'ZAP Authenticated Scan', desc: 'Behind-login page scanning' },
+        { id: 'nuclei.yml', name: 'Nuclei CVE Scanner', desc: 'Known vulnerability detection' },
+        { id: 'tls-headers.yml', name: 'TLS & Headers Check', desc: 'TLS cert + security headers' }
       ]
     },
     'threat-inspector': {
       name: 'Threat Inspector',
       icon: '🔍',
-      repo: 'IronCityIT/threat-inspector',
+      repo: 'IronCityIT/ICIT-ThreatInspector',
       workflows: [
-        { id: 'nmap-scan.yml', name: 'Nmap Port Scan', desc: 'Network port discovery' },
-        { id: 'ssl-check.yml', name: 'SSL/TLS Analysis', desc: 'Certificate and cipher audit' },
-        { id: 'subdomain-enum.yml', name: 'Subdomain Enumeration', desc: 'Asset discovery' }
+        { id: 'nmap-scan.yml', name: 'Port Scan (Nmap)', desc: 'Network port discovery' },
+        { id: 'ssl-grade.yml', name: 'SSL/TLS Grade', desc: 'Certificate and cipher audit' },
+        { id: 'asset-discovery.yml', name: 'Asset Discovery', desc: 'Subdomain enumeration' },
+        { id: 'secret-scan.yml', name: 'Secret Scan (Gitleaks)', desc: 'Credential leak detection' },
+        { id: 'container-scan.yml', name: 'Container Scan (Trivy)', desc: 'Docker image vulnerabilities' }
       ]
     },
     'shadowscan': {
       name: 'ShadowScan',
       icon: '👁️',
-      repo: 'IronCityIT/shadowscan',
+      repo: 'IronCityIT/ICIT-ShadowScan',
       workflows: [
         { id: 'darkweb-monitor.yml', name: 'Dark Web Monitor', desc: 'Tor network scanning' },
         { id: 'credential-check.yml', name: 'Credential Leak Check', desc: 'Breach database search' }
@@ -66,7 +71,7 @@ export default function RunPage() {
     'dns-guard': {
       name: 'DNS Guard',
       icon: '🛡️',
-      repo: 'IronCityIT/dns-guard',
+      repo: 'IronCityIT/ICIT-DNSGuard',
       workflows: [
         { id: 'dns-audit.yml', name: 'DNS Security Audit', desc: 'Full DNS configuration check' },
         { id: 'dns-monitor.yml', name: 'DNS Monitoring', desc: 'Continuous DNS health check' }
@@ -75,7 +80,7 @@ export default function RunPage() {
     'surge': {
       name: 'Surge',
       icon: '⚡',
-      repo: 'IronCityIT/surge',
+      repo: 'IronCityIT/ICIT-Surge',
       workflows: [
         { id: 'load-test.yml', name: 'Load Test', desc: 'Performance under stress' },
         { id: 'uptime-check.yml', name: 'Uptime Monitor', desc: 'Availability check' }
@@ -84,7 +89,7 @@ export default function RunPage() {
     'ironsight': {
       name: 'IronSight Forensics',
       icon: '🔬',
-      repo: 'IronCityIT/ironsight-forensics',
+      repo: 'IronCityIT/ICIT-IronSight',
       workflows: [
         { id: 'memory-analysis.yml', name: 'Memory Analysis', desc: 'RAM dump investigation' },
         { id: 'disk-analysis.yml', name: 'Disk Analysis', desc: 'Storage forensics' }
