@@ -2,11 +2,17 @@
 
 import { useState } from 'react';
 
+interface Workflow {
+  id: string;
+  name: string;
+  desc: string;
+}
+
 interface Product {
   name: string;
   icon: string;
   repo: string;
-  workflows: string[];
+  workflows: Workflow[];
 }
 
 interface Products {
@@ -19,6 +25,7 @@ export default function RunPage() {
   const [targetInput, setTargetInput] = useState('');
   const [clientName, setClientName] = useState('');
   const [scanType, setScanType] = useState('baseline');
+  const [selectedWorkflows, setSelectedWorkflows] = useState<string[]>([]);
   const [notifyEmail, setNotifyEmail] = useState('security@ironcityit.com');
   const [githubToken, setGithubToken] = useState('');
   const [showTokenModal, setShowTokenModal] = useState(false);
@@ -31,37 +38,57 @@ export default function RunPage() {
       name: 'AttackSim Pro',
       icon: '⚔️',
       repo: 'IronCityIT/attacksim-pro',
-      workflows: ['zap-baseline.yml', 'zap-full.yml', 'nuclei-scan.yml']
+      workflows: [
+        { id: 'zap-baseline.yml', name: 'ZAP Baseline (Passive)', desc: 'Non-intrusive passive scan' },
+        { id: 'zap-full.yml', name: 'ZAP Full Scan (Active)', desc: 'Comprehensive active scanning' },
+        { id: 'nuclei-scan.yml', name: 'Nuclei CVE Scanner', desc: 'Known vulnerability detection' }
+      ]
     },
     'threat-inspector': {
       name: 'Threat Inspector',
       icon: '🔍',
       repo: 'IronCityIT/threat-inspector',
-      workflows: ['nmap-scan.yml', 'ssl-check.yml', 'subdomain-enum.yml']
+      workflows: [
+        { id: 'nmap-scan.yml', name: 'Nmap Port Scan', desc: 'Network port discovery' },
+        { id: 'ssl-check.yml', name: 'SSL/TLS Analysis', desc: 'Certificate and cipher audit' },
+        { id: 'subdomain-enum.yml', name: 'Subdomain Enumeration', desc: 'Asset discovery' }
+      ]
     },
     'shadowscan': {
       name: 'ShadowScan',
       icon: '👁️',
       repo: 'IronCityIT/shadowscan',
-      workflows: ['darkweb-monitor.yml', 'credential-check.yml']
+      workflows: [
+        { id: 'darkweb-monitor.yml', name: 'Dark Web Monitor', desc: 'Tor network scanning' },
+        { id: 'credential-check.yml', name: 'Credential Leak Check', desc: 'Breach database search' }
+      ]
     },
     'dns-guard': {
       name: 'DNS Guard',
       icon: '🛡️',
       repo: 'IronCityIT/dns-guard',
-      workflows: ['dns-audit.yml', 'dns-monitor.yml']
+      workflows: [
+        { id: 'dns-audit.yml', name: 'DNS Security Audit', desc: 'Full DNS configuration check' },
+        { id: 'dns-monitor.yml', name: 'DNS Monitoring', desc: 'Continuous DNS health check' }
+      ]
     },
     'surge': {
       name: 'Surge',
       icon: '⚡',
       repo: 'IronCityIT/surge',
-      workflows: ['load-test.yml', 'uptime-check.yml']
+      workflows: [
+        { id: 'load-test.yml', name: 'Load Test', desc: 'Performance under stress' },
+        { id: 'uptime-check.yml', name: 'Uptime Monitor', desc: 'Availability check' }
+      ]
     },
     'ironsight': {
       name: 'IronSight Forensics',
       icon: '🔬',
       repo: 'IronCityIT/ironsight-forensics',
-      workflows: ['memory-analysis.yml', 'disk-analysis.yml']
+      workflows: [
+        { id: 'memory-analysis.yml', name: 'Memory Analysis', desc: 'RAM dump investigation' },
+        { id: 'disk-analysis.yml', name: 'Disk Analysis', desc: 'Storage forensics' }
+      ]
     }
   };
 
@@ -94,8 +121,17 @@ export default function RunPage() {
   const selectProduct = (productId: string) => {
     setSelectedProduct(productId);
     setTargets([]);
+    setSelectedWorkflows([]);
     setConsoleOutput([]);
     setShowConsole(false);
+  };
+
+  const toggleWorkflow = (workflowId: string) => {
+    setSelectedWorkflows(prev => 
+      prev.includes(workflowId) 
+        ? prev.filter(w => w !== workflowId)
+        : [...prev, workflowId]
+    );
   };
 
   const triggerScan = async () => {
@@ -116,6 +152,11 @@ export default function RunPage() {
       return;
     }
 
+    if (selectedWorkflows.length === 0) {
+      alert('Please select at least one scan type');
+      return;
+    }
+
     const product = products[selectedProduct];
     setIsRunning(true);
     setShowConsole(true);
@@ -123,43 +164,47 @@ export default function RunPage() {
 
     log('info', `Initiating ${product.name} scan...`);
     log('info', `Targets: ${targets.join(', ')}`);
+    log('info', `Workflows: ${selectedWorkflows.length} selected`);
 
     try {
       for (const target of targets) {
-        log('info', `Dispatching workflow for ${target}...`);
+        for (const workflowId of selectedWorkflows) {
+          const workflow = product.workflows.find(w => w.id === workflowId);
+          log('info', `Dispatching ${workflow?.name} for ${target}...`);
 
-        const response = await fetch(
-          `https://api.github.com/repos/${product.repo}/actions/workflows/${product.workflows[0]}/dispatches`,
-          {
-            method: 'POST',
-            headers: {
-              'Authorization': `token ${token}`,
-              'Accept': 'application/vnd.github.v3+json',
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              ref: 'main',
-              inputs: {
-                target_url: target,
-                client_name: clientName || 'Manual Scan',
-                scan_id: `scan-${Date.now()}`,
-                notify_email: notifyEmail
-              }
-            })
+          const response = await fetch(
+            `https://api.github.com/repos/${product.repo}/actions/workflows/${workflowId}/dispatches`,
+            {
+              method: 'POST',
+              headers: {
+                'Authorization': `token ${token}`,
+                'Accept': 'application/vnd.github.v3+json',
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                ref: 'main',
+                inputs: {
+                  target_url: target,
+                  client_name: clientName || 'Manual Scan',
+                  scan_id: `scan-${Date.now()}`,
+                  notify_email: notifyEmail
+                }
+              })
+            }
+          );
+
+          if (response.status === 204) {
+            log('success', `✓ ${workflow?.name} triggered for ${target}`);
+          } else if (response.status === 404) {
+            log('error', `✗ Workflow not found: ${workflowId}`);
+          } else if (response.status === 401) {
+            log('error', `✗ Invalid GitHub token`);
+            localStorage.removeItem('github_token');
+            setGithubToken('');
+          } else {
+            const error = await response.json();
+            log('error', `✗ Error: ${error.message}`);
           }
-        );
-
-        if (response.status === 204) {
-          log('success', `✓ Workflow triggered for ${target}`);
-        } else if (response.status === 404) {
-          log('error', `✗ Repository or workflow not found: ${product.repo}`);
-        } else if (response.status === 401) {
-          log('error', `✗ Invalid GitHub token`);
-          localStorage.removeItem('github_token');
-          setGithubToken('');
-        } else {
-          const error = await response.json();
-          log('error', `✗ Error: ${error.message}`);
         }
       }
 
@@ -285,17 +330,30 @@ export default function RunPage() {
               </div>
 
               <div>
-                <label className="block text-[#8892a6] text-sm font-semibold uppercase tracking-wider mb-2">Scan Type</label>
-                <select
-                  value={scanType}
-                  onChange={(e) => setScanType(e.target.value)}
-                  className="w-full p-4 bg-[#0a0e17] border border-[#1e293b] rounded-lg text-white focus:outline-none focus:border-[#00ff88] transition-all"
-                >
-                  <option value="baseline">Baseline Scan (Passive)</option>
-                  <option value="full">Full Scan (Active)</option>
-                  <option value="api">API Scan</option>
-                  <option value="authenticated">Authenticated Scan</option>
-                </select>
+                <label className="block text-[#8892a6] text-sm font-semibold uppercase tracking-wider mb-2">Select Scans to Run</label>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  {products[selectedProduct].workflows.map((workflow) => (
+                    <label
+                      key={workflow.id}
+                      className={`flex items-start gap-3 p-4 rounded-lg border cursor-pointer transition-all ${
+                        selectedWorkflows.includes(workflow.id)
+                          ? 'bg-[#00ff88]/10 border-[#00ff88]'
+                          : 'bg-[#0a0e17] border-[#1e293b] hover:border-[#8892a6]'
+                      }`}
+                    >
+                      <input
+                        type="checkbox"
+                        checked={selectedWorkflows.includes(workflow.id)}
+                        onChange={() => toggleWorkflow(workflow.id)}
+                        className="mt-1 w-4 h-4 accent-[#00ff88]"
+                      />
+                      <div>
+                        <div className="font-semibold">{workflow.name}</div>
+                        <div className="text-sm text-[#8892a6]">{workflow.desc}</div>
+                      </div>
+                    </label>
+                  ))}
+                </div>
               </div>
 
               <div>
